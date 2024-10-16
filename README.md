@@ -31,7 +31,7 @@ The program reads a mathematical expression in RPN format and computes the resul
    ```
    After running the program, input the expression in Reverse Polish Notation format (e.g., `23+`), where the operands precede the operators.
 
-### Example:
+### Examples:
 For the input `23+`, the program will compute:
 ```
 2 + 3 = 5

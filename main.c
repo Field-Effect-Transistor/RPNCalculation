@@ -46,7 +46,7 @@ int main(void) {
                     }
                     break;
                 case '-':
-                    if(!push(&stack, arg1 - arg2)) {
+                    if(!push(&stack, arg2 - arg1)) {
                         printf("Stack overflow");
                         return 3;
                     }
@@ -58,7 +58,7 @@ int main(void) {
                     }
                     break;
                 case '/':
-                    if(!push(&stack, arg1 / arg2)) {
+                    if(!push(&stack, arg2 / arg1)) {
                         printf("Stack overflow");
                         return 3;
                     }
