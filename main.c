@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #include "stack.h"
 
+//size of stack
 #define SIZE 128
+//number of digits in number + 1 for /0
+#define nSIZE 11
 #define UINT unsigned int
 
 int main(void) {
@@ -27,6 +31,10 @@ int main(void) {
     
     // Allocate memory for the expression string
     char* e = (char*)calloc(8 * SIZE, sizeof(char));
+    char num[nSIZE] = "";
+    for(int i = 0; i < nSIZE; ++i) {
+        num[i] = '\0';
+    }
 
     // Check for successful memory allocation for the expression
     if(e == NULL) {
@@ -99,11 +107,23 @@ int main(void) {
         } 
         // Check if the current character is a digit
         else if (*curr >= '0' && *curr <= '9') {
-            if (!push(&stack, *curr - '0')) { // Convert char to int and push onto the stack
+            for(; *curr >= '0' && *curr <= '9'; ++curr) {
+                num[strlen(num)] = *curr;
+            }
+
+            if(!push(&stack, atoi(num))) {
                 printf("Stack overflow");
                 return 3; // Exit if stack overflow occurs
             }
+            for(int i = 0; i < nSIZE; ++i) {
+                num[i] = '\0';
+            }
+
+            --curr; // restore the curr pointer
         } 
+        else if (*curr == ' ') {
+            continue;
+        }
         // Handle unsupported characters
         else {
             printf("Invalid expression: unsupported character: %c\n", *curr);
