@@ -56,12 +56,26 @@ int main(void) {
     // Process each character in the expression
     for(char* curr = e; *curr != '\0'; ++curr) {
         // Check if the current character is an operator
-        if(*curr == '+' || *curr == '-' || *curr == '*' || *curr == '/' || *curr == '^') {
+        if( // Arithmetic operators
+            *curr == '+' || *curr == '-' ||
+            *curr == '*' || *curr == '/' ||
+            *curr == 'p' ||
+            // Bitwise operators
+            *curr == '&' || *curr == '|' ||
+            *curr == '^' || *curr == '~' ||
+            *curr == '<' || *curr == '>') {
             UINT arg1, arg2; // Variables to hold the operands
             // Pop two operands from the stack
-            if(!pop(&stack, &arg1) || !pop(&stack, &arg2)) {
+            if(!pop(&stack, &arg1)) {
                 printf("Stack is empty\n");
                 return 2; // Exit if the stack is empty
+            }
+
+            if(*curr != '~') {
+                if(!pop(&stack, &arg2)) {
+                    printf("Stack is empty\n");
+                    return 2; // Exit if the stack is empty
+                }
             }
 
             // Perform the operation based on the current operator
@@ -94,10 +108,58 @@ int main(void) {
                         return 3; // Exit if stack overflow occurs
                     }
                     break;
-                case '^':
+                case 'p':
                     if(!push(&stack, pow(arg2, arg1))) {
                         printf("Stack overflow");
                         return 3; // Exit if stack overflow occurs
+                    }
+                    break;
+                case '&':
+                    if(!push(&stack, arg1 & arg2)) {
+                        printf("Stack overflow");
+                        return 3; // Exit if stack overflow occurs
+                    }
+                    break;
+                case '|':
+                    if(!push(&stack, arg1 | arg2)) {
+                        printf("Stack overflow");
+                        return 3; // Exit if stack overflow occurs
+                    }
+                    break;
+                case '^':
+                    if(!push(&stack, arg1 ^ arg2)) {
+                        printf("Stack overflow");
+                        return 3; // Exit if stack overflow occurs
+                    }
+                    break;
+                case '~':
+                    if(!push(&stack, ~arg1)) {
+                        printf("Stack overflow");
+                        return 3; // Exit if stack overflow occurs
+                    }
+                    break;
+                case '<':
+                    if(curr[1] == '<') {
+                        ++curr; //restore the curr pointer
+                        if(!push(&stack, arg2 << arg1)) {
+                            printf("Stack overflow");
+                            return 3; // Exit if stack overflow occurs
+                        }
+                    } else {
+                        printf("Unsupported operation.\n");
+                        return 4;
+                    }
+                    break;
+                case '>':
+                    if(curr[1] == '>') {
+                        ++curr; //restore the curr pointer
+                            if(!push(&stack, arg2 >> arg1)) {
+                                printf("Stack overflow");
+                                return 3; // Exit if stack overflow occurs
+                            }
+                    } else {
+                        printf("Unsupported operation.\n");
+                        return 4;
                     }
                     break;
                 default:

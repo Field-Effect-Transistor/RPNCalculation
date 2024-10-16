@@ -5,11 +5,20 @@ This project implements a simple calculator using a stack to perform operations 
 ## Program Description
 
 The program reads a mathematical expression in RPN format and computes the result using a stack. It supports the following operations:
-- Addition (`+`)
-- Subtraction (`-`)
-- Multiplication (`*`)
-- Division (`/`)
-
+1. Arithmetic operations:
+   - Addition (`+`)
+   - Subtraction (`-`)
+   - Multiplication (`*`)
+   - Division (`/`)
+   - Exponent (`p`)
+2. Bitwise operations:
+   - AND (`&`)
+   - OR (`|`)
+   - XOR (`^`)
+   - NOT (`~`)
+   - Left shift (`<<`)
+   - Right shift (`>>`)
+   
 ### Features:
 - Stack-based implementation for storing and processing operands.
 - Handles single-digit numbers and basic arithmetic operations.
@@ -22,7 +31,7 @@ The program reads a mathematical expression in RPN format and computes the resul
    
 2. **Compiling the program:**
    ```bash
-   gcc main.c -o index.out
+   gcc main.c -lm -o index.out
    ```
 
 3. **Running the program:**
@@ -48,6 +57,7 @@ For the input `22 3 +`, the program will compute:
 - **Stack Overflow:** If too many operands are pushed to the stack, the program will notify the user of a stack overflow and exit with `error code 3`.
 - **Unsupported Operation:** If an unsupported operation is encountered, the program will display an error message and exit with `error code 4`.
 - **Invalid expression:** If an invalid expression is encountered, the program will display an error message and exit with `error code 5`.
+- **Division by zero:** If division by zero is attempted, the program will display an error message and exit with `error code 6`.
 
 
 ### File Structure:
