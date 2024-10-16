@@ -7,7 +7,7 @@ This project implements a simple calculator using a stack to perform operations 
 The program reads a mathematical expression in RPN format and computes the result using a stack. It supports the following operations:
 1. Arithmetic:
    - Addition (`+`)
-   - Subtraction (`-`)
+   - Subtraction (Absolute difference) (`-`)
    - Multiplication (`*`)
    - Division (`/`)
    - Exponent (`p`)
@@ -31,7 +31,7 @@ The program reads a mathematical expression in RPN format and computes the resul
 
 ### Features:
 - Stack-based implementation for storing and processing operands.
-- Handles single-digit numbers and basic arithmetic operations.
+- Handles only unsigned integer numbers(4 bytes).
 - Dynamic memory allocation for stack storage and input expression.
 - Error handling for unsupported operations and stack overflow.
 

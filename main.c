@@ -97,7 +97,11 @@ int main(void) {
                         push(&stack, --arg1);
                         ++curr; //restore curr
                     } else {
-                        push(&stack, arg1 - arg2);
+                        if(arg1 > arg2) {
+                            push(&stack, arg1 - arg2);
+                        } else {
+                            push(&stack, arg2 - arg1);
+                        }
                     }
                     break;
                 case '*':
@@ -156,6 +160,7 @@ int main(void) {
                 case '=':
                     if (curr[1] == '=') {
                         push(&stack, arg1 == arg2);
+                        ++curr;
                     } else {
                         printf("Unsupported operation.\n");
                         return 4;
@@ -164,6 +169,7 @@ int main(void) {
                 case '!':
                     if (curr[1] == '=') {
                         push(&stack, arg1 != arg2);
+                        ++curr;
                     } else {
                         printf("Unsupported operation.\n");
                         return 4;
