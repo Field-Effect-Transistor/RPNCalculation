@@ -6,7 +6,7 @@
 #include "stack.h"
 
 //size of stack
-#define SIZE 128
+#define SIZE 16
 //number of digits in number + 1 for /0
 #define nSIZE 11
 #define UINT unsigned int
@@ -26,7 +26,7 @@ int main(void) {
     }
 
     // Instructions for the user
-    printf("Acceptable operations: + - * / ^\n");
+    printf("For acceptable operations look at README.md\n");
     printf("Enter expression: ");
     
     // Allocate memory for the expression string
@@ -59,21 +59,23 @@ int main(void) {
         if( // Arithmetic operators
             *curr == '+' || *curr == '-' ||
             *curr == '*' || *curr == '/' ||
-            *curr == 'p' ||
+            *curr == 'p' || *curr == '%' ||
             // Bitwise operators
             *curr == '&' || *curr == '|' ||
             *curr == '^' || *curr == '~' ||
-            *curr == '<' || *curr == '>') {
+            *curr == '<' || *curr == '>' ||
+            // Comparison operators
+            *curr == '=' || *curr == '!') {
             UINT arg1, arg2; // Variables to hold the operands
             // Pop two operands from the stack
             if(!pop(&stack, &arg1)) {
-                printf("Stack is empty\n");
+                printf("Stack underflow\n");
                 return 2; // Exit if the stack is empty
             }
 
             if(*curr != '~') {
                 if(!pop(&stack, &arg2)) {
-                    printf("Stack is empty\n");
+                    printf("Stack underflow\n");
                     return 2; // Exit if the stack is empty
                 }
             }
@@ -81,82 +83,87 @@ int main(void) {
             // Perform the operation based on the current operator
             switch(*curr) {
                 case '+':
-                    if(!push(&stack, arg1 + arg2)) {
-                        printf("Stack overflow");
-                        return 3; // Exit if stack overflow occurs
+                    if(curr[1] == '+') {
+                        push(&stack, arg2);
+                        push(&stack, ++arg1);  
+                        ++curr; //restore curr                    
+                    } else {
+                        push(&stack, arg1 + arg2);
                     }
                     break;
                 case '-':
-                    if(!push(&stack, arg2 - arg1)) {
-                        printf("Stack overflow");
-                        return 3; // Exit if stack overflow occurs
+                    if(curr[1] == '-') {
+                        push(&stack, arg2);
+                        push(&stack, --arg1);
+                        ++curr; //restore curr
+                    } else {
+                        push(&stack, arg1 - arg2);
                     }
                     break;
                 case '*':
-                    if(!push(&stack, arg1 * arg2)) {
-                        printf("Stack overflow");
-                        return 3; // Exit if stack overflow occurs
-                    }
+                    push(&stack, arg1 * arg2);
                     break;
                 case '/':
                     if (!arg1) { // Check for division by zero
                         printf("Error: Division by zero\n");
                         return 6; // Exit if division by zero
                     }
-                    if(!push(&stack, arg2 / arg1)) {
-                        printf("Stack overflow");
-                        return 3; // Exit if stack overflow occurs
-                    }
+                    push(&stack, arg2 / arg1);
                     break;
                 case 'p':
-                    if(!push(&stack, pow(arg2, arg1))) {
-                        printf("Stack overflow");
-                        return 3; // Exit if stack overflow occurs
+                    push(&stack, pow(arg2, arg1));
+                case '%':
+                    if (!arg1) { // Check for division by zero
+                        printf("Error: Division by zero\n");
+                        return 6; // Exit if division by zero
                     }
+                    push(&stack, arg2 % arg1);
                     break;
                 case '&':
-                    if(!push(&stack, arg1 & arg2)) {
-                        printf("Stack overflow");
-                        return 3; // Exit if stack overflow occurs
-                    }
+                    ;push(&stack, arg1 & arg2);
                     break;
                 case '|':
-                    if(!push(&stack, arg1 | arg2)) {
-                        printf("Stack overflow");
-                        return 3; // Exit if stack overflow occurs
-                    }
+                    push(&stack, arg1 | arg2);
                     break;
                 case '^':
-                    if(!push(&stack, arg1 ^ arg2)) {
-                        printf("Stack overflow");
-                        return 3; // Exit if stack overflow occurs
-                    }
+                    push(&stack, arg1 ^ arg2);
                     break;
                 case '~':
-                    if(!push(&stack, ~arg1)) {
-                        printf("Stack overflow");
-                        return 3; // Exit if stack overflow occurs
-                    }
+                    push(&stack, ~arg1);
                     break;
                 case '<':
                     if(curr[1] == '<') {
+                        push(&stack, arg2 << arg1);
                         ++curr; //restore the curr pointer
-                        if(!push(&stack, arg2 << arg1)) {
-                            printf("Stack overflow");
-                            return 3; // Exit if stack overflow occurs
-                        }
+                    } else if(curr[1] == '=') {
+                        push(&stack, arg2 <= arg1);
+                        ++curr; //restore the curr pointer
+                    } else {
+                        push(&stack, arg2 < arg1);
+                    }
+                    break;
+                case '>':
+                    if(curr[1] == '>') {
+                        push(&stack, arg2 >> arg1);
+                        ++curr; //restore the curr pointer
+                    } else if(curr[1] == '=') {
+                        push(&stack, arg2 >= arg1);
+                        ++curr; //restore the curr pointer
+                    } else {
+                        push(&stack, arg2 > arg1);
+                    }
+                    break;
+                case '=':
+                    if (curr[1] == '=') {
+                        push(&stack, arg1 == arg2);
                     } else {
                         printf("Unsupported operation.\n");
                         return 4;
                     }
                     break;
-                case '>':
-                    if(curr[1] == '>') {
-                        ++curr; //restore the curr pointer
-                            if(!push(&stack, arg2 >> arg1)) {
-                                printf("Stack overflow");
-                                return 3; // Exit if stack overflow occurs
-                            }
+                case '!':
+                    if (curr[1] == '=') {
+                        push(&stack, arg1 != arg2);
                     } else {
                         printf("Unsupported operation.\n");
                         return 4;
@@ -195,6 +202,9 @@ int main(void) {
 
     // Output the result from the top of the stack
     printf("Result: %u\n", stack.arr[stack.top]);
+    if(stack.top > 0) {
+        printf("Warning: stack has more then 1 element.\n");
+    }
 
     // Free allocated memory
     free(stack.arr);

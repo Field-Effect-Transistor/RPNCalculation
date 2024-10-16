@@ -5,20 +5,30 @@ This project implements a simple calculator using a stack to perform operations 
 ## Program Description
 
 The program reads a mathematical expression in RPN format and computes the result using a stack. It supports the following operations:
-1. Arithmetic operations:
+1. Arithmetic:
    - Addition (`+`)
    - Subtraction (`-`)
    - Multiplication (`*`)
    - Division (`/`)
    - Exponent (`p`)
-2. Bitwise operations:
+   - Modulo (`%`)
+   - Increment (`++`)
+   - Decrement (`--`)
+2. Bitwise:
    - AND (`&`)
    - OR (`|`)
    - XOR (`^`)
    - NOT (`~`)
    - Left shift (`<<`)
    - Right shift (`>>`)
-   
+3. Comparison:
+   - Equal (`==`)
+   - Not equal (`!=`)
+   - Less than (`<`)
+   - Less than or equal (`<=`)
+   - Greater than (`>`)
+   - Greater than or equal (`>=`)
+
 ### Features:
 - Stack-based implementation for storing and processing operands.
 - Handles single-digit numbers and basic arithmetic operations.
@@ -53,12 +63,14 @@ For the input `22 3 +`, the program will compute:
 
 ### Error Handling:
 - **Failed to allocate memory:** If memory allocation was failed, the program will display an error message and exit with `error code 1`.
-- **Empty Stack:** If an operation is attempted without sufficient operands, the program will display a "Stack is empty" error and exit with `error code 2`.
+- **Stack underflow:** If an operation is attempted without sufficient operands, the program will display a "Stack underflow" error and exit with `error code 2`.
 - **Stack Overflow:** If too many operands are pushed to the stack, the program will notify the user of a stack overflow and exit with `error code 3`.
 - **Unsupported Operation:** If an unsupported operation is encountered, the program will display an error message and exit with `error code 4`.
 - **Invalid expression:** If an invalid expression is encountered, the program will display an error message and exit with `error code 5`.
 - **Division by zero:** If division by zero is attempted, the program will display an error message and exit with `error code 6`.
 
+### Warnings:
+- **Non-empty Stack:** If the stack is not empty after all operations are performed, the program will display a warning message and continue execution.
 
 ### File Structure:
 - `main.c`: Contains the main function that processes input and performs stack operations.
