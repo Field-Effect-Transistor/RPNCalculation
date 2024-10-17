@@ -5,6 +5,8 @@
 //number of digits in number + 1 for /0
 #define nSIZE 11
 
+#define InP(s, a) if(!pop(&s, &a)) { printf("Stack underflow\n"); return 2; }
+
 int rpn(char* expression, int* result) {
     struct Stack stack; // Declare a stack structure
     { // Stack initialization
@@ -44,36 +46,35 @@ int rpn(char* expression, int* result) {
             // Comparison operators
             *curr == '=' || *curr == '!') {
             int arg1, arg2; // Variables to hold the operands
-            // Pop two operands from the stack
-            if(!pop(&stack, &arg1)) {
-                printf("Stack underflow\n");
-                return 2; // Exit if the stack is empty
-            }
 
-            if(*curr != '~') {
-                if(!pop(&stack, &arg2)) {
-                    printf("Stack underflow\n");
-                    return 2; // Exit if the stack is empty
-                }
+            // Pop two operands from the stack
+            InP(stack, arg1);
+
+            if( *curr == '*' || *curr == '/' ||
+                *curr == 'p' || *curr == '%' ||
+                *curr == '|' || *curr == '^' ||
+                *curr == '&' || *curr == '<' ||
+                *curr == '>' || *curr == '=') {
+                InP(stack, arg2);
             }
 
             // Perform the operation based on the current operator
             switch(*curr) {
                 case '+':
                     if(curr[1] == '+') {
-                        push(&stack, arg2);
                         push(&stack, ++arg1);  
                         ++curr; //restore curr                    
                     } else {
+                        InP(stack, arg2);
                         push(&stack, arg1 + arg2);
                     }
                     break;
                 case '-':
                     if(curr[1] == '-') {
-                        push(&stack, arg2);
                         push(&stack, --arg1);
                         ++curr; //restore curr
                     } else {
+                        InP(stack, arg2);
                         push(&stack, arg2 - arg1);
                     }
                     break;
@@ -97,10 +98,20 @@ int rpn(char* expression, int* result) {
                     push(&stack, arg2 % arg1);
                     break;
                 case '&':
-                    ;push(&stack, arg1 & arg2);
+                    if(curr[1] == '&') {
+                        push(&stack, arg2 && arg1);
+                        ++curr; //restore the curr pointer
+                    } else {
+                        push(&stack, arg1 & arg2);
+                    }
                     break;
                 case '|':
-                    push(&stack, arg1 | arg2);
+                    if(curr[1] == '|') {
+                        push(&stack, arg2 || arg1);
+                        ++curr; //restore the curr pointer
+                    } else {
+                        push(&stack, arg1 | arg2);
+                    }
                     break;
                 case '^':
                     push(&stack, arg1 ^ arg2);
@@ -141,11 +152,11 @@ int rpn(char* expression, int* result) {
                     break;
                 case '!':
                     if (curr[1] == '=') {
+                        InP(stack, arg2);
                         push(&stack, arg1 != arg2);
                         ++curr;
                     } else {
-                        printf("Unsupported operation.\n");
-                        return 4;
+                        push(&stack, !arg1);
                     }
                     break;
                 default:

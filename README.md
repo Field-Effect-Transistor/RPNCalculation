@@ -14,13 +14,6 @@ The program reads a mathematical expression in RPN format and computes the resul
    - Modulo (`%`)
    - Increment (`++`)
    - Decrement (`--`)
-2. Bitwise:
-   - AND (`&`)
-   - OR (`|`)
-   - XOR (`^`)
-   - NOT (`~`)
-   - Left shift (`<<`)
-   - Right shift (`>>`)
 3. Comparison:
    - Equal (`==`)
    - Not equal (`!=`)
@@ -28,6 +21,19 @@ The program reads a mathematical expression in RPN format and computes the resul
    - Less than or equal (`<=`)
    - Greater than (`>`)
    - Greater than or equal (`>=`)
+3. Logical:
+   - Logical AND (`&&`)
+   - Logical OR (`||`)
+   - Logical NOT (`!`)
+2. Bitwise:
+   - AND (`&`)
+   - OR (`|`)
+   - XOR (`^`)
+   - NOT (`~`)
+   - Left shift (`<<`)
+   - Right shift (`>>`)
+
+
 
 ### Features:
 - Stack-based implementation for storing and processing operands.

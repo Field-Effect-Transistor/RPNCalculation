@@ -31,6 +31,7 @@ int main(void) {
     
     int result, status;
     if ((status = rpn(e, &result)) != 0) {
+        free(e);
         return status;
     }
     
