@@ -1,14 +1,12 @@
 #include "stack.h"
 
-#define UINT unsigned int
-
 struct Stack {
     int size;
     int top;
-    UINT* arr;
+    int* arr;
 };
 
-bool push(struct Stack* stack, UINT data) {
+bool push(struct Stack* stack, int data) {
     if (stack->top == stack->size - 1) {
         return false;
     }
@@ -17,7 +15,7 @@ bool push(struct Stack* stack, UINT data) {
     return true;
 }
 
-bool pop(struct Stack* stack, UINT* data) {
+bool pop(struct Stack* stack, int* data) {
     if (stack->top == -1) {
         return false;
     }

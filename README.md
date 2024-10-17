@@ -7,7 +7,7 @@ This project implements a simple calculator using a stack to perform operations 
 The program reads a mathematical expression in RPN format and computes the result using a stack. It supports the following operations:
 1. Arithmetic:
    - Addition (`+`)
-   - Subtraction (Absolute difference) (`-`)
+   - Subtraction (`-`)
    - Multiplication (`*`)
    - Division (`/`)
    - Exponent (`p`)
@@ -31,7 +31,7 @@ The program reads a mathematical expression in RPN format and computes the resul
 
 ### Features:
 - Stack-based implementation for storing and processing operands.
-- Handles only unsigned integer numbers(4 bytes).
+- Handles only integer numbers(4 bytes).
 - Dynamic memory allocation for stack storage and input expression.
 - Error handling for unsupported operations and stack overflow.
 
@@ -48,7 +48,7 @@ The program reads a mathematical expression in RPN format and computes the resul
    ```bash
    ./index.out
    ```
-   After running the program, input the expression in Reverse Polish Notation format (e.g., `23+`), where the operands precede the operators.
+   After running the program, input the expression in Reverse Polish Notation format (e.g., `2 3+`), where the operands precede the operators.
 
 ### Examples:
 For the input `2 3+`, the program will compute:
@@ -75,3 +75,4 @@ For the input `22 3 +`, the program will compute:
 ### File Structure:
 - `main.c`: Contains the main function that processes input and performs stack operations.
 - `stack.h` and `stack.c`: Define and implement stack functions like `push` and `pop`.
+- `rpn.h` and `rpn.c`: Define and implement RPN functions like `rpn`.
